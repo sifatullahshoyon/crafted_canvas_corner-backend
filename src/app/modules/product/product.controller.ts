@@ -7,11 +7,28 @@ import { productService } from './product.service';
 const createProduct = async (req: Request, res: Response) => {
   try {
     const payload = req.body;
-    // const result = await ProductModel.create(payload);
     const result = await productService.createProductIntoDB(payload);
-    res.status(200).json({
+    res.json({
+      status: true,
       message: 'Product created successfully',
-      success: true,
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: 'something went wrong',
+      error,
+    });
+  }
+};
+
+// Find All Products
+const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    const result = await productService.getAllProductsFromDb();
+    res.json({
+      status: true,
+      message: 'Product retrieved successfully',
       data: result,
     });
   } catch (error) {
@@ -25,4 +42,5 @@ const createProduct = async (req: Request, res: Response) => {
 
 export const productController = {
   createProduct,
+  getAllProducts,
 };
