@@ -22,13 +22,32 @@ const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-// Find All Products
+// Get All Products
 const getAllProducts = async (req: Request, res: Response) => {
   try {
     const result = await productService.getAllProductsFromDb();
     res.json({
       status: true,
-      message: 'Product retrieved successfully',
+      message: 'All Products retrieved successfully',
+      data: result,
+    });
+  } catch (error) {
+    res.json({
+      status: false,
+      message: 'something went wrong',
+      error,
+    });
+  }
+};
+
+// Get All Products
+const getSingleProduct = async (req: Request, res: Response) => {
+  try {
+    const productId = req.params.productId;
+    const result = await productService.getSingleProductFromDb(productId);
+    res.json({
+      status: true,
+      message: 'Single Product retrieved successfully',
       data: result,
     });
   } catch (error) {
@@ -43,4 +62,5 @@ const getAllProducts = async (req: Request, res: Response) => {
 export const productController = {
   createProduct,
   getAllProducts,
+  getSingleProduct,
 };

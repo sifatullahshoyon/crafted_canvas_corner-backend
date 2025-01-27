@@ -9,13 +9,20 @@ const createProductIntoDB = async (payload: IProduct): Promise<IProduct> => {
   return result;
 };
 
-// find all products
+// get all products
 const getAllProductsFromDb = async () => {
   const result = await ProductModel.find();
+  return result;
+};
+
+// get single product
+const getSingleProductFromDb = async (productId: string) => {
+  const result = await ProductModel.findById(productId);
   return result;
 };
 
 export const productService = {
   createProductIntoDB,
   getAllProductsFromDb,
+  getSingleProductFromDb,
 };
