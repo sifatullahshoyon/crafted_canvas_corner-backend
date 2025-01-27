@@ -1,5 +1,6 @@
 import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
+import productRouter from './app/modules/product/product.route';
 
 const app: Application = express();
 
@@ -8,6 +9,9 @@ app.use(express.json());
 app.use(cors());
 
 // ========================== Application Routes Start ===================
+
+// Products
+app.use('/api/products', productRouter);
 
 // ========================== Application Routes End ===================
 app.get('/', (req: Request, res: Response) => {
