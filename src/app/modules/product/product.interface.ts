@@ -7,7 +7,7 @@ export interface IProduct {
     | 'Office Supplies'
     | 'Art Supplies'
     | 'Educational'
-    | 'Technology';
+    | 'Technology'; // union type literal
   description: string;
   quantity: number;
   inStock: boolean;
