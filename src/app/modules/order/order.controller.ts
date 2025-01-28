@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { orderService } from './order.service';
 
@@ -11,10 +12,29 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully',
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.json({
       status: false,
-      message: 'something went wrong',
+      message: error.message || 'Something went wrong',
+      error,
+    });
+  }
+};
+
+// Calculate Revenue
+const calculateRevenue = async (req: Request, res: Response) => {
+  try {
+    const totalRevenue = await orderService.calculateRevenue();
+
+    res.json({
+      status: true,
+      message: 'Revenue calculated successfully',
+      data: { totalRevenue },
+    });
+  } catch (error: any) {
+    res.json({
+      status: false,
+      message: error.message || 'Error calculating revenue',
       error,
     });
   }
@@ -22,4 +42,5 @@ const createOrder = async (req: Request, res: Response) => {
 
 export const orderController = {
   createOrder,
+  calculateRevenue,
 };

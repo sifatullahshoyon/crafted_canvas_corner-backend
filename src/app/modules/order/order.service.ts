@@ -3,7 +3,7 @@ import { IOrder } from './order.interface';
 import OrderModel from './order.model';
 
 // create order
-const createOrderIntoDB = async (orderData: IOrder) => {
+const createOrderIntoDB = async (orderData: IOrder): Promise<IOrder> => {
   // Retrieve the product from the database
   const product = await ProductModel.findById(orderData.product);
   if (!product) {
@@ -40,6 +40,32 @@ const createOrderIntoDB = async (orderData: IOrder) => {
   return newOrder;
 };
 
+const calculateRevenue = async () => {
+  const orders = await OrderModel.aggregate([
+    {
+      $lookup: {
+        from: 'products',
+        localField: 'product',
+        foreignField: '_id',
+        as: 'productDetails',
+      },
+    },
+    { $unwind: '$productDetails' },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: {
+          $sum: { $multiply: ['$quantity', '$productDetails.price'] },
+        },
+      },
+    },
+  ]);
+
+  //   console.log('Aggregation result:', orders);
+  return orders[0]?.totalRevenue || 0;
+};
+
 export const orderService = {
   createOrderIntoDB,
+  calculateRevenue,
 };
