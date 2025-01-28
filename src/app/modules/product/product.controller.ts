@@ -40,7 +40,7 @@ const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
-// Get All Products
+// Get Single Products
 const getSingleProduct = async (req: Request, res: Response) => {
   try {
     const productId = req.params.productId;

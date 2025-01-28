@@ -22,7 +22,10 @@ const getSingleProductFromDb = async (productId: string) => {
 };
 
 // product update
-const updateProductIntoDB = async (productId: string, data: IProduct) => {
+const updateProductIntoDB = async (
+  productId: string,
+  data: Partial<IProduct>,
+) => {
   const result = await ProductModel.findByIdAndUpdate(productId, data, {
     new: true,
   });
