@@ -19,7 +19,7 @@ const productSchema: Schema = new Schema<IProduct>(
     price: {
       type: Number,
       required: [true, 'Product Price is Required'],
-      min: [0, 'Price must be a positive number'],
+      min: [1, 'Price must be a positive number'],
     },
     category: {
       type: String,
@@ -43,7 +43,7 @@ const productSchema: Schema = new Schema<IProduct>(
     quantity: {
       type: Number,
       required: [true, 'Product Quantity is Required'],
-      min: [0, 'Quantity must be 0 or more. Negative values are not allowed.'],
+      min: [1, 'Quantity must be a positive number.'],
     },
     inStock: {
       type: Boolean,

@@ -1,10 +1,14 @@
 // Request & Response Handle
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { productService } from './product.service';
 
 // create product
-const createProduct = async (req: Request, res: Response) => {
+const createProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const payload = req.body;
     const result = await productService.createProductIntoDB(payload);
@@ -14,11 +18,12 @@ const createProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.json({
-      status: false,
-      message: 'something went wrong',
-      error,
-    });
+    next(error);
+    // res.json({
+    //   status: false,
+    //   message: 'something went wrong',
+    //   error,
+    // });
   }
 };
 
