@@ -6,7 +6,7 @@ const orderRouter = Router();
 
 // Post Route
 orderRouter.post(
-  '/create-order',
+  '/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsedBody = await orderValidation.orderValidationSchema.parseAsync(

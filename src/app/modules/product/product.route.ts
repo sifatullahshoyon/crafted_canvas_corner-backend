@@ -8,7 +8,7 @@ const productRouter = Router();
 
 // create product routes
 productRouter.post(
-  '/create-product',
+  '/',
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const parsedBody =

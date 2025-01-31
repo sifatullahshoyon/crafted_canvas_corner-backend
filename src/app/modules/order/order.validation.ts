@@ -18,10 +18,10 @@ const orderValidationSchema = z.object({
   quantity: z
     .number({
       required_error: 'Product quantity is required',
-      invalid_type_error: 'Quantity must be a number',
+      invalid_type_error: 'Product Quantity must be a number',
     })
-    .int('Quantity must be an integer')
-    .min(1, 'Quantity must be at least 1'),
+    .int('Product Quantity must be an integer')
+    .min(1, 'Product Quantity must be at least 1'),
 
   totalPrice: z
     .number({

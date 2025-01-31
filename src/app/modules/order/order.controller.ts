@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { orderService } from './order.service';
 
 // create order
-const createOrder = async (req: Request, res: Response) => {
+const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orderData = req.body;
     const result = await orderService.createOrderIntoDB(orderData);
@@ -12,17 +12,17 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully',
       data: result,
     });
-  } catch (error: any) {
-    res.json({
-      status: false,
-      message: error.message || 'Something went wrong',
-      error,
-    });
+  } catch (error) {
+    next(error);
   }
 };
 
 // Calculate Revenue
-const calculateRevenue = async (req: Request, res: Response) => {
+const calculateRevenue = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const totalRevenue = await orderService.calculateRevenue();
 
@@ -32,11 +32,7 @@ const calculateRevenue = async (req: Request, res: Response) => {
       data: { totalRevenue },
     });
   } catch (error: any) {
-    res.json({
-      status: false,
-      message: error.message || 'Error calculating revenue',
-      error,
-    });
+    next(error);
   }
 };
 

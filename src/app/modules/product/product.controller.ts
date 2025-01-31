@@ -28,7 +28,11 @@ const createProduct = async (
 };
 
 // Get All Products
-const getAllProducts = async (req: Request, res: Response) => {
+const getAllProducts = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const result = await productService.getAllProductsFromDb();
     res.json({
@@ -37,16 +41,16 @@ const getAllProducts = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.json({
-      status: false,
-      message: 'something went wrong',
-      error,
-    });
+    next(error);
   }
 };
 
 // Get Single Products
-const getSingleProduct = async (req: Request, res: Response) => {
+const getSingleProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const productId = req.params.productId;
     const result = await productService.getSingleProductFromDb(productId);
@@ -56,16 +60,16 @@ const getSingleProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.json({
-      status: false,
-      message: 'something went wrong',
-      error,
-    });
+    next(error);
   }
 };
 
 // update product
-const updateProduct = async (req: Request, res: Response) => {
+const updateProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const productId = req.params.productId;
     const data = req.body;
@@ -76,16 +80,16 @@ const updateProduct = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error) {
-    res.json({
-      status: false,
-      message: 'something went wrong',
-      error,
-    });
+    next(error);
   }
 };
 
 // delete product
-const deleteProduct = async (req: Request, res: Response) => {
+const deleteProduct = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   try {
     const productId = req.params.productId;
     await productService.deleteProductFromDb(productId);
@@ -95,11 +99,7 @@ const deleteProduct = async (req: Request, res: Response) => {
       result: {},
     });
   } catch (error) {
-    res.json({
-      status: false,
-      message: 'something went wrong',
-      error,
-    });
+    next(error);
   }
 };
 
