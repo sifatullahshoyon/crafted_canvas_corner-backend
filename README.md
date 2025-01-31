@@ -17,7 +17,7 @@ An Express application built with TypeScript for managing a stationery shop. The
 ## Live Link
 
 You can access the live version of this project here:  
-[Stationery Shop Live](https://stationery-shop-l2.vercel.app/)
+[Stationery Shop Live](https://crafted-canvas-corner-l2.vercel.app/)
 
 ---
 
