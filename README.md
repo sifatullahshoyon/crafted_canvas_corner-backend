@@ -83,5 +83,5 @@ Detailed error responses are returned in case of:
 1. Clone the repository:
    ```bash
    git clone <https://github.com/sifatullahshoyon/crafted_canvas_corner-l2>
-   cd stationery-shop
+   cd crafted_canvas_corner-l2
    ```
