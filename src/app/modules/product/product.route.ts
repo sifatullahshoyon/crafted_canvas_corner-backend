@@ -1,6 +1,7 @@
 // handle routes
 
 import { NextFunction, Request, Response, Router } from 'express';
+
 import { productController } from './product.controller';
 import { productValidation } from './product.validation';
 
