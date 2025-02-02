@@ -1,15 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express';
 import { orderService } from './order.service';
+import sendResponse from '../../../utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
 // create order
 const createOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const orderData = req.body;
     const result = await orderService.createOrderIntoDB(orderData);
-    res.json({
-      status: true,
+    // res.json({
+    //   status: true,
+    //   message: 'Order created successfully',
+    //   data: result,
+    // });
+    sendResponse(res, {
       message: 'Order created successfully',
+      statusCode: StatusCodes.CREATED,
       data: result,
     });
   } catch (error) {

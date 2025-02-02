@@ -2,6 +2,8 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { productService } from './product.service';
+import sendResponse from '../../../utils/sendResponse';
+import { StatusCodes } from 'http-status-codes';
 
 // create product
 const createProduct = async (
@@ -12,9 +14,10 @@ const createProduct = async (
   try {
     const payload = req.body;
     const result = await productService.createProductIntoDB(payload);
-    res.json({
-      status: true,
+
+    sendResponse(res, {
       message: 'Product created successfully',
+      statusCode: StatusCodes.CREATED,
       data: result,
     });
   } catch (error) {
@@ -35,9 +38,10 @@ const getAllProducts = async (
 ) => {
   try {
     const result = await productService.getAllProductsFromDb();
-    res.json({
-      status: true,
+
+    sendResponse(res, {
       message: 'All Products retrieved successfully',
+      statusCode: StatusCodes.OK,
       data: result,
     });
   } catch (error) {
@@ -54,9 +58,10 @@ const getSingleProduct = async (
   try {
     const productId = req.params.productId;
     const result = await productService.getSingleProductFromDb(productId);
-    res.json({
-      status: true,
+
+    sendResponse(res, {
       message: 'Single Product retrieved successfully',
+      statusCode: StatusCodes.OK,
       data: result,
     });
   } catch (error) {
@@ -74,9 +79,10 @@ const updateProduct = async (
     const productId = req.params.productId;
     const data = req.body;
     const result = await productService.updateProductIntoDB(productId, data);
-    res.json({
-      status: true,
+
+    sendResponse(res, {
       message: 'Product updated successfully',
+      statusCode: StatusCodes.OK,
       data: result,
     });
   } catch (error) {
@@ -93,10 +99,11 @@ const deleteProduct = async (
   try {
     const productId = req.params.productId;
     await productService.deleteProductFromDb(productId);
-    res.json({
-      status: true,
+
+    sendResponse(res, {
       message: 'Product deleted successfully',
-      result: {},
+      statusCode: StatusCodes.OK,
+      data: {},
     });
   } catch (error) {
     next(error);
