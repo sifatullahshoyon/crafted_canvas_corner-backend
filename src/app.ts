@@ -3,10 +3,11 @@ import cors from 'cors';
 import productRouter from './app/modules/product/product.route';
 import orderRouter from './app/modules/order/order.route';
 import { globalErrorHandler } from './middlewares/globalErrorHandler';
+import { StatusCodes } from 'http-status-codes';
 
 const app: Application = express();
 
-// Parsers
+// middleware
 app.use(express.json());
 app.use(cors());
 
@@ -31,7 +32,7 @@ app.use(globalErrorHandler);
 
 // not found route
 app.use('*', (req: Request, res: Response) => {
-  res.status(404).json({
+  res.status(StatusCodes.NOT_FOUND).json({
     success: false,
     message: 'Route is not found',
   });

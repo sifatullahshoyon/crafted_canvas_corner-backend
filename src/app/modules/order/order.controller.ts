@@ -1,47 +1,31 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NextFunction, Request, Response } from 'express';
 import { orderService } from './order.service';
 import sendResponse from '../../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
+import catchAsync from '../../../utils/catchAsync';
 
 // create order
-const createOrder = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const orderData = req.body;
-    const result = await orderService.createOrderIntoDB(orderData);
-    // res.json({
-    //   status: true,
-    //   message: 'Order created successfully',
-    //   data: result,
-    // });
-    sendResponse(res, {
-      message: 'Order created successfully',
-      statusCode: StatusCodes.CREATED,
-      data: result,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
+const createOrder = catchAsync(async (req, res) => {
+  const orderData = req.body;
+
+  const result = await orderService.createOrderIntoDB(orderData);
+
+  sendResponse(res, {
+    message: 'Order created successfully',
+    statusCode: StatusCodes.CREATED,
+    data: result,
+  });
+});
 
 // Calculate Revenue
-const calculateRevenue = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    const totalRevenue = await orderService.calculateRevenue();
+const calculateRevenue = catchAsync(async (req, res) => {
+  const totalRevenue = await orderService.calculateRevenue();
 
-    res.json({
-      status: true,
-      message: 'Revenue calculated successfully',
-      data: { totalRevenue },
-    });
-  } catch (error: any) {
-    next(error);
-  }
-};
+  sendResponse(res, {
+    message: 'Revenue calculated successfully',
+    statusCode: StatusCodes.OK,
+    data: { totalRevenue },
+  });
+});
 
 export const orderController = {
   createOrder,
