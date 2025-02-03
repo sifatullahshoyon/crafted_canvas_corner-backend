@@ -10,8 +10,69 @@ const createProductIntoDB = async (payload: IProduct): Promise<IProduct> => {
 };
 
 // get all products
-const getAllProductsFromDb = async () => {
-  const result = await ProductModel.find();
+const getAllProductsFromDb = async (query: Record<string, unknown>) => {
+  console.log('main', query);
+
+  const queryObj = { ...query };
+
+  // queryObj : { searchTerm: 'pilot', name: 'pen' }  থেকে searchTerm কে বাদ দেওয়া হচ্ছে।
+  const excludingImportant = ['searchTerm', 'page', 'limit'];
+
+  // * যেসব ফিল্ড আমাদের ফিল্টারিং এর জন্য দরকার নেই সেই সব ফিল্ডকে বাদ দেওয়া হচ্ছে।
+
+  excludingImportant.forEach(key => delete queryObj[key]);
+
+  console.log('queryObj :', queryObj);
+
+  const searchTerm = query?.searchTerm || '';
+
+  // name , brand , category
+
+  const searchableFields = ['name', 'brand', 'category'];
+
+  // * এই ভাবে ও করা যায় query এর কাজ কিন্তুু code optimized হয় না।
+
+  // const result = await ProductModel.find({
+  //   $or: [
+  //     { name: { $regex: searchTerm, $options: 'i' } },
+  //     { brand: { $regex: searchTerm, $options: 'i' } },
+  //     { category: { $regex: searchTerm, $options: 'i' } },
+  //   ],
+  // });
+
+  // * code optimize + reusable
+
+  // const result = await ProductModel.find({
+  //   $or : searchableFields.map((field)=> ({
+  //     [field] : {$regex : searchTerm, $options : "i"}
+  //   }))
+  // })
+
+  const searchQuery = ProductModel.find({
+    $or: searchableFields.map(field => ({
+      [field]: { $regex: searchTerm, $options: 'i' },
+    })),
+  });
+
+  // * filtering:-
+
+  // const result = await searchQuery.find(queryObj);
+  const filterQuery = searchQuery.find(queryObj);
+
+  // * pagination
+  /**
+   * Pagination এর জন্য ০২ টা জিনিস সব সময় মনে রাখতে হবে।
+   * 1. ‍skip
+   * 2. limit
+   *
+   */
+  const page = Number(query?.page) || 1;
+  const limit = Number(query?.limit) || 10;
+  // skip = (page -1) * limit
+  const skipped = (page - 1) * limit;
+
+  const result = await filterQuery.skip(skipped).limit(limit);
+
   return result;
 };
 
