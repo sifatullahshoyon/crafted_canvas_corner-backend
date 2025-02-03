@@ -16,7 +16,13 @@ const getAllProductsFromDb = async (query: Record<string, unknown>) => {
   const queryObj = { ...query };
 
   // queryObj : { searchTerm: 'pilot', name: 'pen' }  থেকে searchTerm কে বাদ দেওয়া হচ্ছে।
-  const excludingImportant = ['searchTerm', 'page', 'limit'];
+  const excludingImportant = [
+    'searchTerm',
+    'page',
+    'limit',
+    'sortOrder',
+    'sortBy',
+  ];
 
   // * যেসব ফিল্ড আমাদের ফিল্টারিং এর জন্য দরকার নেই সেই সব ফিল্ডকে বাদ দেওয়া হচ্ছে।
 
@@ -71,7 +77,22 @@ const getAllProductsFromDb = async (query: Record<string, unknown>) => {
   // skip = (page -1) * limit
   const skipped = (page - 1) * limit;
 
-  const result = await filterQuery.skip(skipped).limit(limit);
+  // const result = await filterQuery.skip(skipped).limit(limit);
+  const paginatedQuery = filterQuery.skip(skipped).limit(limit);
+
+  // * Sorting
+  let sortStr;
+
+  if (query?.sortBy && query?.sortOrder) {
+    const sortBy = query?.sortBy;
+    const sortOrder = query?.sortOrder;
+    // "-price" অথবা "price"
+    sortStr = `${sortOrder === 'desc' ? '-' : ''}${sortBy}`;
+  }
+
+  console.log('sort:', sortStr);
+
+  const result = await paginatedQuery.sort(sortStr);
 
   return result;
 };
