@@ -27,7 +27,7 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       required: [true, 'Please enter your password'],
-      select: false,
+      select: false, // Excludes password from query results by default for security.
     },
     photo: String,
     role: {
