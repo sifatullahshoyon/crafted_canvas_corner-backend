@@ -2,12 +2,39 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../../utils/catchAsync';
 import sendResponse from '../../../utils/sendResponse';
 import { userService } from './user.service';
+// import { IUser } from './user.interface';
+
+// create user
+// const createUser = catchAsync(async (req, res) => {
+//   const payload = req.body;
+
+//   const result = await userService.createUserIntoDb(payload);
+
+//   sendResponse(res, {
+//     message: 'User Created successfully',
+//     statusCode: StatusCodes.CREATED,
+//     data: result,
+//   });
+// });
+
+// create admin
+const createAdmin = catchAsync(async (req, res) => {
+  const payload = req.body;
+
+  const result = await userService.createUserIntoDb(payload, 'admin'); // admin রোল
+
+  sendResponse(res, {
+    message: 'Admin Created successfully',
+    statusCode: StatusCodes.CREATED,
+    data: result,
+  });
+});
 
 // create user
 const createUser = catchAsync(async (req, res) => {
   const payload = req.body;
 
-  const result = await userService.createUserIntoDb(payload);
+  const result = await userService.createUserIntoDb(payload, 'user'); // user রোল
 
   sendResponse(res, {
     message: 'User Created successfully',
@@ -67,6 +94,7 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 export const userController = {
+  createAdmin,
   createUser,
   getAllUser,
   getSingleUser,
