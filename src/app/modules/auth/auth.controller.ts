@@ -2,9 +2,10 @@ import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../../utils/catchAsync';
 import sendResponse from '../../../utils/sendResponse';
 import { authService } from './auth.service';
+import { Request, Response } from 'express';
 
 // register
-const register = catchAsync(async (req, res) => {
+const register = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
   const result = await authService.register(payload);
@@ -18,7 +19,7 @@ const register = catchAsync(async (req, res) => {
 });
 
 // login
-const login = catchAsync(async (req, res) => {
+const login = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
   const result = await authService.login(payload);
@@ -32,7 +33,36 @@ const login = catchAsync(async (req, res) => {
   });
 });
 
+// forgot password
+const forgotPassword = catchAsync(async (req: Request, res: Response) => {
+  const payload = req.body;
+
+  await authService.forgotPassword(payload);
+
+  sendResponse(res, {
+    message: 'Reset Password Link Send To Your Email Address',
+    statusCode: StatusCodes.ACCEPTED,
+    data: null,
+  });
+});
+
+// reset password
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  // token = req.headers.authorization // best practice
+  const payload = req.body;
+
+  const result = await authService.resetPassword(payload);
+
+  sendResponse(res, {
+    message: 'Password Reset Successfully!!',
+    statusCode: StatusCodes.ACCEPTED,
+    data: result,
+  });
+});
+
 export const authController = {
   register,
   login,
+  forgotPassword,
+  resetPassword,
 };

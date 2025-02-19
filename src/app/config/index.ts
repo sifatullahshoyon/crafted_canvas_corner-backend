@@ -9,4 +9,6 @@ export default {
   node_env: process.env.NODE_ENV,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
   jwt_secret: process.env.JWT_SECRET,
+  send_mail_auth_user: process.env.SEND_MAIL_AUTH_USER,
+  send_mail_auth_pass: process.env.SEND_MAIL_AUTH_PASS,
 };
