@@ -4,10 +4,27 @@ import { productService } from './product.service';
 import sendResponse from '../../../utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../../utils/catchAsync';
+import { Request, Response } from 'express';
+import { sendImageToCloudinary } from '../../../helpers/fileUploadHelper';
 
 // create product
-const createProduct = catchAsync(async (req, res) => {
+const createProduct = catchAsync(async (req: Request, res: Response) => {
+  // const payload = JSON.parse(req.body.data);
   const payload = req.body;
+
+  if (req.file) {
+    const imgName = req.file?.filename ? req.file?.filename : 'product img';
+
+    const imageName = imgName;
+
+    const path = req.file.path;
+
+    const { secure_url } = await sendImageToCloudinary(imageName, path);
+
+    payload.photo = secure_url;
+  }
+
+  // console.log('product controller payload: ', payload);
 
   const result = await productService.createProductIntoDB(payload);
 
@@ -19,7 +36,7 @@ const createProduct = catchAsync(async (req, res) => {
 });
 
 // Get All Products
-const getAllProducts = catchAsync(async (req, res) => {
+const getAllProducts = catchAsync(async (req: Request, res: Response) => {
   const result = await productService.getAllProductsFromDb(req.query);
 
   sendResponse(res, {
@@ -30,7 +47,7 @@ const getAllProducts = catchAsync(async (req, res) => {
 });
 
 // Get Single Products
-const getSingleProduct = catchAsync(async (req, res) => {
+const getSingleProduct = catchAsync(async (req: Request, res: Response) => {
   const productId = req.params.productId;
 
   const result = await productService.getSingleProductFromDb(productId);
@@ -43,7 +60,7 @@ const getSingleProduct = catchAsync(async (req, res) => {
 });
 
 // update product
-const updateProduct = catchAsync(async (req, res) => {
+const updateProduct = catchAsync(async (req: Request, res: Response) => {
   const productId = req.params.productId;
 
   const data = req.body;
@@ -58,7 +75,7 @@ const updateProduct = catchAsync(async (req, res) => {
 });
 
 // delete product
-const deleteProduct = catchAsync(async (req, res) => {
+const deleteProduct = catchAsync(async (req: Request, res: Response) => {
   const productId = req.params.productId;
 
   await productService.deleteProductFromDb(productId);

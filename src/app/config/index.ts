@@ -11,4 +11,7 @@ export default {
   jwt_secret: process.env.JWT_SECRET,
   send_mail_auth_user: process.env.SEND_MAIL_AUTH_USER,
   send_mail_auth_pass: process.env.SEND_MAIL_AUTH_PASS,
+  cloudinary_api_name: process.env.CLOUDINARY_API_NAME,
+  cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
+  cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
 };

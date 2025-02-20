@@ -49,6 +49,10 @@ const productSchema: Schema = new Schema<IProduct>(
       type: Boolean,
       default: true,
     },
+    photo: {
+      type: String,
+      required: [true, 'Product Photo is required'],
+    },
   },
   { timestamps: true },
 );

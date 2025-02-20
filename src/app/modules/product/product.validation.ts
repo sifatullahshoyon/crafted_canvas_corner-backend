@@ -38,6 +38,8 @@ const productValidationSchema = z.object({
     .positive({ message: 'Quantity must be at least 1' }),
 
   inStock: z.boolean().optional(),
+
+  photo: z.string({ required_error: 'Product Photo is required' }),
 });
 
 export const productValidation = {
