@@ -82,7 +82,7 @@ const forgotPassword = async (payload: { email: string }) => {
   };
 
   const token = jwt.sign(jwtPayload, config.jwt_secret as string, {
-    expiresIn: '1h',
+    expiresIn: '7d',
   });
 
   const resetLink = `http://localhost:5173/reset-password?id=${user?._id}&token=${token}`;
