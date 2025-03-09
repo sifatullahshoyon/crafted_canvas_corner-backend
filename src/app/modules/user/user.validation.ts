@@ -25,7 +25,8 @@ const userValidationSchema = z.object({
       required_error: 'Age must be provided and must be a number',
     })
     .int()
-    .positive(),
+    .positive()
+    .optional(),
 
   photo: z
     .string({
