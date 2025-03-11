@@ -39,10 +39,6 @@ cloudinary.config({
   cloud_name: config.cloudinary_api_name,
   api_key: config.cloudinary_api_key,
   api_secret: config.cloudinary_api_secret,
-
-  //   cloud_name: 'dowpaz8fo',
-  //   api_key: '217979131748264',
-  //   api_secret: '4Xi9cSzSD6PsR9TwDYwYJVWJmMY',
 });
 
 export const sendImageToCloudinary = (

@@ -20,14 +20,14 @@ const getAllUserFromDb = async () => {
   return result;
 };
 
-// Get All User
+// Get Single User
 const getSingleUserFromDb = async (userId: string) => {
   const result = await UserModel.findById(userId);
 
   return result;
 };
 
-// Get All User
+// Get Update single User
 const userUpdatedFromDb = async (userId: string, body: IUser) => {
   const result = await UserModel.findByIdAndUpdate(userId, body);
 
